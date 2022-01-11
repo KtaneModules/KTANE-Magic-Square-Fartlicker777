@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using Rnd = UnityEngine.Random;
 
@@ -35,15 +34,19 @@ public class MagicSquareGenerator : MonoBehaviour {
       for (int i = 0; i < 2; i++) {
          Target = Sum - x[i];
          do {
-            x[3 + i] = Rnd.Range(1, Target / 2 + 1);
+            x[3 + i] = Rnd.Range(1, Target / 2 - 1);
             x[6 + i] = Target - x[3 + i];
          } while (UsedNumbers.Contains(x[3 + i]) || UsedNumbers.Contains(x[6 + i]));
          UsedNumbers.Add(x[3 + i]);
          UsedNumbers.Add(x[6 + i]);
       }
 
-      for (int i = 0; i < 3; i++) {
+      for (int i = 1; i < 3; i++) {
          x[i * 3 + 2] = Sum - x[i * 3 + 1] - x[i * 3];
+         if (UsedNumbers.Contains(x[i * 3 + 2])) {
+            goto Restart;
+         }
+         UsedNumbers.Add(x[i * 3 + 2]);
       }
 
       for (int i = 0; i < 9; i++) {
