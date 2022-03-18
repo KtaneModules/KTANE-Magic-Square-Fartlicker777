@@ -73,6 +73,7 @@ public class MagicSquare : MonoBehaviour
         {
             if (Button == OldIndex)
             {
+                Audio.PlaySoundAtTransform("Click", transform);
                 Buttons[Button].GetComponent<MeshRenderer>().material = ButtonColors[0];
                 hasSelected = false;
                 return;
@@ -100,11 +101,7 @@ public class MagicSquare : MonoBehaviour
     IEnumerator SwapTiles(int a, int b)
     {
         Vector3 aOldPos = Buttons[a].transform.localPosition;
-        Vector3 bOldPos = Buttons[b].transform.localPosition;
-        if (a == b)
-            Audio.PlaySoundAtTransform("Click", transform);
-        else
-            Audio.PlaySoundAtTransform("Woosh", transform);
+        Vector3 bOldPos = Buttons[b].transform.localPosition;Audio.PlaySoundAtTransform("Woosh", transform);
         Animating = true;
         var duration = 0.3f;
         var elapsed = 0f;
