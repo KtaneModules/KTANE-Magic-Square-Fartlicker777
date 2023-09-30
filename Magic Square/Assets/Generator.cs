@@ -4,57 +4,31 @@ using Rnd = UnityEngine.Random;
 
 public class MagicSquareGenerator : MonoBehaviour {
 
-   public static int[] generateSquare () {
-      Restart:
-      List<int> UsedNumbers = new List<int>();
-      int[] x = new int[9];
+   public static int[] generateSquare (int ModID) {
+      
 
-      UsedNumbers.Clear();
-      for (int i = 0; i < 9; i++) {
-         x[i] = 0;
-      }
+      int a = Rnd.Range(2, 30);
+      int b = 0;
+      int c = 0;
 
-      int Sum = 0;
 
-      for (int i = 0; i < 3; i++) {
-         do {
-            x[i] = Rnd.Range(1, 100);
-         } while (UsedNumbers.Contains(x[i]));
-         UsedNumbers.Add(x[i]);
-      }
+      do {
+         b = Rnd.Range(a + 1, a + 30);
+      } while (b == 2 * a);
 
-      Sum = x[0] + x[1] + x[2];
+      c = Rnd.Range(b + a + 1, b + a + 31);
 
-      if (Sum > 150) {
-         goto Restart;
-      }
+      /*
+       * General formula for a 3x3 magic square:
+       * 
+       * c - b | c + (a + b) | c - a
+       * 
+       * c - (a - b) | c | c + (a - b)
+       * 
+       * c + a | c - (a + b) | c + b
+       */
 
-      int Target = Sum - x[0];
-
-      for (int i = 0; i < 2; i++) {
-         Target = Sum - x[i];
-         do {
-            x[3 + i] = Rnd.Range(1, Target / 2 - 1);
-            x[6 + i] = Target - x[3 + i];
-         } while (UsedNumbers.Contains(x[3 + i]) || UsedNumbers.Contains(x[6 + i]));
-         UsedNumbers.Add(x[3 + i]);
-         UsedNumbers.Add(x[6 + i]);
-      }
-
-      for (int i = 1; i < 3; i++) {
-         x[i * 3 + 2] = Sum - x[i * 3 + 1] - x[i * 3];
-         if (UsedNumbers.Contains(x[i * 3 + 2])) {
-            goto Restart;
-         }
-         UsedNumbers.Add(x[i * 3 + 2]);
-      }
-
-      for (int i = 0; i < 9; i++) {
-         if (x[i] > 99 || x[i] <= 0) {
-            goto Restart;
-         }
-      }
-
-      return x;
+      Debug.LogFormat("[Magic Square #{0}] A = {1}, B = {2}, C = {3}", ModID, a, b, c);
+      return new int[] { c - b, c + a + b, c - a, c - (a - b), c, c + (a - b), c + a, c - (a + b), c + b};
    }
 }
